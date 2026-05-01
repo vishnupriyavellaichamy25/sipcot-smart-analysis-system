@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIPCOT Industrial Monitoring System</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    
+
+    <!-- Global Top Bar -->
+    <div class="top-header">
+        <div class="container top-header-inner">
+            <div class="contact-info">
+                <span>&#9742; Phone: +91-44-28523836</span>
+                <span>&#9993; Email: info@sipcot.in</span>
+            </div>
+            <div class="accessibility-icons">
+                <span class="acc-btn" onclick="decreaseFont()" title="Decrease Font Size">-A</span>
+                <span class="acc-btn" onclick="resetFont()" title="Reset Font Size">A</span>
+                <span class="acc-btn" onclick="increaseFont()" title="Increase Font Size">+A</span>
+                <span class="divider">|</span>
+                <select id="langSelector" onchange="changeLanguage(this.value)" class="form-control" style="display:inline-block; width:auto; padding:2px 5px; height:auto; border-radius:4px; border:1px solid #ccc; font-size: 0.9em;">
+                    <option value="en">English</option>
+                    <option value="ta">தமிழ் (Tamil)</option>
+                    <option value="hi">हिंदी (Hindi)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global Main Header -->
+    <header class="main-header">
+        <div class="container header-inner">
+            <div class="header-logo left-logo" title="Tamil Nadu Government Logo">
+                <img src="tn-logo.png" alt="TN Logo">
+            </div>
+            <div class="header-titles">
+                <h1 data-i18n-key="system_title">SIPCOT Industrial Monitoring System</h1>
+                <p data-i18n-key="system_subtitle">Industrial Data Management and Analysis</p>
+            </div>
+            <div class="header-logo right-logo" title="SIPCOT Logo">
+                <img src="sipcot-logo.png" alt="SIPCOT Logo">
+            </div>
+        </div>
+    </header>
+
+    <!-- Global Navigation -->
+    <nav class="main-nav">
+        <div class="container nav-container">
+            <ul id="main-nav-links">
+                <li><a href="#home-section" class="nav-link scroll-link active" id="nav-home" data-i18n-key="nav_home">Home</a></li>
+                <li><a href="#about-section" class="nav-link scroll-link" data-i18n-key="nav_about">About Us</a></li>
+                <li><a href="#features-section" class="nav-link scroll-link">Features</a></li>
+                <li><a href="#contact-section" class="nav-link scroll-link" id="nav-contact" data-i18n-key="nav_contact">Contact</a></li>
+                <li id="nav-login-btn"><a href="#" onclick="showView('role-selection-view')" class="nav-btn-highlight" data-i18n-key="nav_login">Login</a></li>
+            </ul>
+            <div id="user-controls" style="display: none;">
+                <span id="nav-welcome-msg" class="welcome-text"></span>
+                <button onclick="logout()" class="btn-logout">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTAINER -->
+    <main class="page-content">
+
+        <!-- ================= VIEW: PUBLIC LANDING ================= -->
+        <section id="public-view" class="view-section active-view">
+            
+            <!-- HOME SECTION -->
+            <div id="home-section" class="scroll-section fade-up" style="background-color: #f4f7fb; padding-bottom: 60px;">
+                <div class="hero-banner">
+                    <div class="container hero-content">
+                        <div class="hero-text-box">
+                            <h2 data-i18n-key="hero_title">Welcome to the SIPCOT Industrial Monitoring System</h2>
+                            <p data-i18n-key="hero_subtitle">A centralized platform for monitoring real-time industrial performance, resource management, and investment tracking across all SIPCOT parks in Tamil Nadu.</p>
+                            <button onclick="showView('role-selection-view')" class="btn-hero mt-3" data-i18n-key="hero_btn">Access Portal</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABOUT US SECTION -->
+        <style>
+            .about-hero {
+                text-align: center;
+                padding: 60px 20px;
+                background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+                position: relative;
+                overflow: hidden;
+            }
+            .about-hero::before {
+                content: '';
+                position: absolute;
+                top: -50%; left: -50%;
+                width: 200%; height: 200%;
+                background: radial-gradient(circle, rgba(28, 82, 153, 0.05) 0%, transparent 60%);
+                animation: slowSpin 60s linear infinite;
+                z-index: 0;
+            }
+            @keyframes slowSpin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            .about-content-wrapper {
+                position: relative;
+                z-index: 1;
+            }
+            .about-title {
+                color: #16324f;
+                font-size: 2.5em;
+                font-weight: 700;
+                margin-bottom: 20px;
+            }
+            .about-subtitle {
+                font-size: 1.2em;
+                color: #555;
+                max-width: 700px;
+                margin: 0 auto 40px auto;
+                line-height: 1.6;
+            }
+            
+            /* Grid Layout Styles */
+            .about-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 25px;
+                padding: 0 15px;
+                max-width: 1100px;
+                margin: 0 auto;
+            }
+            .about-card {
+                background: #ffffff;
+                border: 1px solid var(--border-grey);
+                border-radius: 8px;
+                padding: 30px 25px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                text-align: left;
+                position: relative;
+                overflow: hidden;
+            }
+            .about-card::before {
+                content: '';
+                position: absolute;
+                top: 0; left: 0; width: 4px; height: 100%;
+                background-color: var(--brand-blue);
+            }
+            .about-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            }
+            .about-card h3 {
+                color: #16324f;
+                font-size: 1.3em;
+                margin-bottom: 12px;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .about-card p {
+                font-size: 1.05em;
+                line-height: 1.6;
+                color: #4a5568;
+                margin: 0;
+            }
+
+            /* Feature Grid Styles */
+            .feature-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 30px;
+            }
+            .feature-card {
+                background: #ffffff;
+                padding: 30px;
+                border-radius: 8px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+                border-top: 4px solid var(--brand-blue);
+            }
+            .feature-card h4 {
+                color: #16324f;
+                font-size: 1.25em;
+                margin-top: 15px;
+                margin-bottom: 10px;
+                font-weight: 600;
+            }
+            .feature-icon {
+                font-size: 2.5em;
+            }
+            
+            .fade-up {
+                opacity: 0;
+                transform: translateY(30px);
+                transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            }
+            .fade-up.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        </style>
+        
+        <div id="about-section" class="scroll-section fade-up" style="background-color: #ffffff; padding-bottom: 80px;">
+            <div class="about-hero">
+                <div class="about-content-wrapper container">
+                    <h2 class="about-title" data-i18n-key="about_title">About the System</h2>
+                    <p class="about-subtitle" data-i18n-key="about_subtitle">The SIPCOT Industrial Monitoring System is a centralized, highly structured platform designed to aggregate, analyze, and secure critical industrial data across Tamil Nadu.</p>
+                </div>
+            </div>
+
+            <div class="container mt-5">
+                <div class="about-grid">
+                    <div class="about-card">
+                        <h3 data-i18n-key="about_overview_title">&#128203; Project Overview</h3>
+                        <p data-i18n-key="about_overview_desc">A unified framework empowering seamless administration of industrial records across designated SIPCOT parks, ensuring standardized operations and structural transparency.</p>
+                    </div>
+
+                    <div class="about-card">
+                        <h3 data-i18n-key="about_objective_title">&#127919; Objective</h3>
+                        <p data-i18n-key="about_objective_desc">To monitor heavy industrial growth while enforcing accountability. We prioritize resource conservation through structured governmental decision-making.</p>
+                    </div>
+
+                    <div class="about-card">
+                        <h3 data-i18n-key="about_features_title">&#9881; Key Features</h3>
+                        <p data-i18n-key="about_features_desc">Real-time diagnostic dashboards, strict resource usage tracking, and integrated analytical metrics mapped continuously across localized industries.</p>
+                    </div>
+
+                    <div class="about-card">
+                        <h3 data-i18n-key="about_data_title">&#128202; Data Management</h3>
+                        <p data-i18n-key="about_data_desc">Frequent assimilations of mandatory operational statistics. From complex financial investments to baseline water output, data integrity is permanently secured.</p>
+                    </div>
+
+                    <div class="about-card">
+                        <h3 data-i18n-key="about_access_title">&#128274; User Access & Security</h3>
+                        <p data-i18n-key="about_access_desc">Rigorous role-based authentication matrix guarantees that corporate inputs strictly separate from macro-level administrative validations and oversight controls.</p>
+                    </div>
+
+                    <div class="about-card">
+                        <h3 data-i18n-key="about_outcome_title">&#128200; Outcome / Impact</h3>
+                        <p data-i18n-key="about_outcome_desc">Consolidating fragmented compliance reports structurally optimizes civic infrastructural yield, significantly expanding sustainable industrial development.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FEATURES SECTION -->
+        <div id="features-section" class="scroll-section fade-up" style="background-color: #f4f7fb; padding: 80px 15px;">
+            <div class="container">
+                <h2 class="section-title">Key Operational Features</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">⚙️</div>
+                        <h4>Real-Time Tracking</h4>
+                        <p style="color: #555; line-height: 1.6;">Aggregate comprehensive company inputs efficiently through unified dashboard reporting protocols mapping to persistent grids.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💧</div>
+                        <h4>Water & Power Monitoring</h4>
+                        <p style="color: #555; line-height: 1.6;">Enforce algorithmic safety limits mapping explicitly directly towards monthly goal limits, immediately alerting administrators upon excess.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h4>Regional CSR Footprint</h4>
+                        <p style="color: #555; line-height: 1.6;">Track corporate sustainability impacts accurately balancing reported CSR disbursements against pure investment turnovers securing localized fairness.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📈</div>
+                        <h4>Advanced Analytics Matrix</h4>
+                        <p style="color: #555; line-height: 1.6;">Utilize macroscopic dashboard arrays capable of translating fragmented data entries onto continuous efficiency charting grids.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTACT SECTION -->
+        <div id="contact-section" class="scroll-section fade-up" style="padding: 60px 15px; background-color: #ffffff; text-align: center;">
+            <div class="container">
+                <h2 style="color: var(--brand-blue); font-weight: 700; margin-bottom: 20px;">Contact SIPCOT Support</h2>
+                <p style="font-size: 1.1em; color: #555; max-width: 600px; margin: 0 auto 30px auto;">For technical issues or data registry assistance, please reach out to our official state support hubs directly.</p>
+                <div class="row" style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                    <div class="card" style="padding: 20px; text-align: left; width: 300px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee;">
+                        <h4 style="margin-top: 0; color: #333;">Support Desk</h4>
+                        <p style="margin-bottom: 5px; color: #666;">📧 support@sipcot.xyz</p>
+                        <p style="margin-bottom: 0; color: #666;">📞 1800-XXX-XXXX</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </section>
+
+        <!-- ================= VIEW: ROLE SELECTION ================= -->
+        <section id="role-selection-view" class="view-section container" style="display:none;">
+            <div class="auth-card mx-auto">
+                <h2 class="text-center mb-4" data-i18n-key="role_title">Select Login Role</h2>
+                <div class="role-grid">
+                    <div class="role-box" onclick="showLogin('user')">
+                        <div class="role-icon">&#127981;</div>
+                        <h3 data-i18n-key="role_user">Login as User</h3>
+                        <p data-i18n-key="role_user_desc">For SIPCOT Companies</p>
+                    </div>
+                    <div class="role-box" onclick="showLogin('admin')">
+                        <div class="role-icon">&#128188;</div>
+                        <h3 data-i18n-key="role_admin">Login as Admin</h3>
+                        <p data-i18n-key="role_admin_desc">For SIPCOT Officials</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= VIEW: LOGIN FORM ================= -->
+        <section id="login-view" class="view-section container" style="display:none;">
+            <div class="auth-card mx-auto">
+                <button class="btn-back mb-3" onclick="showView('role-selection-view')">&larr; Back</button>
+                <h2 class="text-center mb-4" id="login-title" data-i18n-key="login_user">Company User Login</h2>
+                
+                <div id="login-error" class="alert alert-danger" style="display:none;"></div>
+                
+                <form id="loginForm">
+                    <input type="hidden" id="login-role" value="user">
+                    
+                    <div class="form-group">
+                        <label for="username" data-i18n-key="login_uname">Company ID / Username</label>
+                        <input type="text" id="username" class="form-control" required placeholder="Enter username">
+                    </div>
+                    
+                    <div class="form-group mb-2">
+                        <label for="password" data-i18n-key="login_pwd">Password</label>
+                        <input type="password" id="password" class="form-control" required placeholder="Enter password">
+                    </div>
+                    
+                    <div class="form-group show-pwd-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="showPassword" onchange="togglePassword()">
+                            <span class="checkmark"></span>
+                            Show Password
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary w-100 mt-3 py-2" data-i18n-key="login_btn">Login to Dashboard</button>
+                </form>
+            </div>
+        </section>
+
+
+        <!-- ================= VIEW: USER DASHBOARD ================= -->
+        <section id="user-dashboard-view" class="view-section container" style="display:none;">
+            <div class="dashboard-header mb-4" style="flex-wrap: wrap;">
+                <h2 id="dashboard-company-name" style="flex: 1;">Company Dashboard</h2>
+                <span id="efficiency-badge" class="badge" style="cursor: pointer; user-select: none;" onclick="toggleEfficiencyDetails()" title="Click to view detailed efficiency analysis">Efficiency: N/A <small>▼</small></span>
+                <div id="efficiency-details" class="efficiency-details-box" style="display: none; width: 100%; margin-top: 15px;">
+                    <!-- JS injected -->
+                </div>
+            </div>
+
+            <!-- Smart Features: Summary Cards -->
+            <div class="summary-cards">
+                <div class="card stat-card">
+                    <div class="stat-icon">&#8377;</div>
+                    <div class="stat-details">
+                        <p>Total Investment (Cr)</p>
+                        <h3 id="stat-investment">0.00</h3>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon">&#128101;</div>
+                    <div class="stat-details">
+                        <p>Total Employees</p>
+                        <h3 id="stat-employees">0</h3>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon">&#9889;</div>
+                    <div class="stat-details">
+                        <p>Latest Power (kWh)</p>
+                        <h3 id="stat-power">0</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div id="dashboard-alerts" class="mt-4"></div>
+
+            <div class="two-column-layout mt-4">
+                
+                <!-- Left: Form -->
+                <div class="left-col card">
+                    <div class="card-header">
+                        <h3>Update Monthly Data</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="userDataForm">
+                            <div class="form-group">
+                                <label>Company Name</label>
+                                <input type="text" id="entryCompanyName" class="form-control bg-disabled" disabled>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group half-width">
+                                    <label>Investment (Crores)</label>
+                                    <input type="number" id="entryInvestment" class="form-control" required min="0" step="0.01">
+                                </div>
+                                <div class="form-group half-width">
+                                    <label>Number of Employees</label>
+                                    <input type="number" id="entryEmployees" class="form-control" required min="1">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group half-width">
+                                    <label>Water Usage (L/Day)</label>
+                                    <input type="number" id="entryWater" class="form-control" required min="0">
+                                </div>
+                                <div class="form-group half-width">
+                                    <label>Power Consumption (kWh)</label>
+                                    <input type="number" id="entryPower" class="form-control" required min="0">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Annual Turnover (Crores)</label>
+                                <input type="number" id="entryTurnover" class="form-control" required min="0" step="0.01">
+                            </div>
+
+                            <div class="form-group mt-4">
+                                <h4>Corporate Social Responsibility (CSR) Data</h4>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>CSR Activity Name</label>
+                                <input type="text" id="entryCsrName" class="form-control" placeholder="Enter activity name">
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group half-width">
+                                    <label>CSR Spending (Crores)</label>
+                                    <input type="number" id="entryCsrAmount" class="form-control" min="0" step="0.01" placeholder="0.00">
+                                </div>
+                                <div class="form-group half-width">
+                                    <label>CSR Beneficiaries</label>
+                                    <input type="number" id="entryCsrPeople" class="form-control" min="0" placeholder="Number of people">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>CSR Description</label>
+                                <textarea id="entryCsrDesc" class="form-control" rows="3" placeholder="Brief description of the activity"></textarea>
+                            </div>
+
+                            <button type="submit" class="btn-primary mt-3">Save Data</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Right: Chart and Tracking -->
+                <div class="right-col d-flex-col">
+                    <div class="card progress-card flex-1" style="display: flex; flex-direction: column;">
+                        <div class="card-header">
+                            <h3>Progress Tracking</h3>
+                        </div>
+                        <div class="card-body" style="flex: 1; display: flex; flex-direction: column;">
+                            <div class="chart-btn-group mb-3">
+                                <button type="button" class="chart-btn" data-metric="water" onclick="updateChartMetric('water')">Water</button>
+                                <button type="button" class="chart-btn active" data-metric="power" onclick="updateChartMetric('power')">Power</button>
+                                <button type="button" class="chart-btn" data-metric="investment" onclick="updateChartMetric('investment')">Investment</button>
+                                <button type="button" class="chart-btn" data-metric="employees" onclick="updateChartMetric('employees')">Employees</button>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="userProgressChart"></canvas>
+                            </div>
+                            <div id="chart-insight-msg" class="insight-box" style="display: none;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History Tracking Table -->
+            <div class="card mt-4 table-section">
+                <div class="card-header">
+                    <h3>Data History & Activity Logs</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="gov-table" id="userHistoryTable">
+                            <thead>
+                                <tr>
+                                    <th>Date Issued</th>
+                                    <th>Investment (Cr)</th>
+                                    <th>Employees</th>
+                                    <th>Water (L/day)</th>
+                                    <th>Power (kWh)</th>
+                                    <th>Turnover (Cr)</th>
+                                    <th>CSR Activity</th>
+                                    <th>CSR Amount</th>
+                                    <th>Entered By</th>
+                                </tr>
+                            </thead>
+                            <tbody id="userTableBody">
+                                <!-- JS injected -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ================= VIEW: ADMIN DASHBOARD ================= -->
+        <section id="admin-dashboard-view" class="view-section container" style="display:none;">
+            <div class="dashboard-header mb-4">
+                <h2>Admin Central Dashboard</h2>
+                <span class="badge badge-admin">Master Control</span>
+            </div>
+
+            <!-- Dashboard Alerts -->
+            <div id="admin-dashboard-alerts" class="mb-4"></div>
+
+            <!-- Summary Cards -->
+            <div class="summary-cards">
+                <div class="card stat-card">
+                    <div class="stat-icon">&#127981;</div>
+                    <div class="stat-details">
+                        <p>Total Companies</p>
+                        <h3 id="admin-stat-companies">0</h3>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon">&#8377;</div>
+                    <div class="stat-details">
+                        <p>Total Investment (Cr)</p>
+                        <h3 id="admin-stat-investment">0.00</h3>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon">&#9889;</div>
+                    <div class="stat-details">
+                        <p>Total Power (kWh)</p>
+                        <h3 id="admin-stat-power">0</h3>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon">&#11088;</div>
+                    <div class="stat-details">
+                        <p>Avg Efficiency</p>
+                        <h3 id="admin-stat-efficiency">N/A</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- [NEW] Goal Settings & Smart Intelligence Row -->
+            <div class="two-column-layout mb-4">
+                <div class="left-col card text-center">
+                    <div class="card-header">
+                        <h3>SIPCOT Global Safety Limits</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="adminGoalsForm">
+                            <div class="form-row">
+                                <div class="form-group half-width" style="text-align: left;">
+                                    <label>Max Water (L/Day)</label>
+                                    <input type="number" id="adminMaxWater" class="form-control" placeholder="15000">
+                                </div>
+                                <div class="form-group half-width" style="text-align: left;">
+                                    <label>Max Power (kWh)</label>
+                                    <input type="number" id="adminMaxPower" class="form-control" placeholder="50000">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-primary mt-2 w-100">Enforce Limits</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="right-col card" style="background-color: var(--card-bg);">
+                    <div class="card-header" style="background-color: #f1c40f; color: #fff;">
+                        <h3 style="color: #333;">&#9888; Intelligence Alerts & Anomalies</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="admin-anomalies-list">
+                            <!-- Anomaly data injected here -->
+                            <p style="font-style:italic;" class="text-center">No anomalies detected.</p>
+                        </div>
+                        <div id="admin-predictions-list" class="mt-3 pt-3" style="border-top: 1px dashed #ccc;">
+                            <!-- Predictive analysis injected here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- [NEW] Ranking & CSR Analysis Row -->
+            <div class="two-column-layout mb-4">
+                <div class="left-col card">
+                    <div class="card-header" style="background-color: var(--brand-blue); color: white;">
+                        <h3>Efficiency Rankings</h3>
+                    </div>
+                    <div class="card-body" style="display: flex; justify-content: space-between;">
+                        <div style="flex: 1; padding-right: 15px;">
+                            <h4 style="color: var(--text-dark); margin-bottom: 10px;">Top 3 Performers</h4>
+                            <ul id="admin-top-ranking" style="list-style: none; padding: 0;">
+                                <li><small>Loading...</small></li>
+                            </ul>
+                        </div>
+                        <div style="width: 1px; background-color: var(--border-grey);"></div>
+                        <div style="flex: 1; padding-left: 15px;">
+                            <h4 style="color: #e74c3c; margin-bottom: 10px;">Bottom 3 Performers</h4>
+                            <ul id="admin-bottom-ranking" style="list-style: none; padding: 0;">
+                                <li><small>Loading...</small></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Right: CSR -->
+                <div class="right-col card text-center">
+                    <div class="card-header">
+                        <h3>Regional CSR Impact</h3>
+                    </div>
+                    <div class="card-body mt-2">
+                        <h2 id="admin-csr-total" style="color: var(--brand-blue); margin-bottom: 5px;">0.00 Cr</h2>
+                        <p class="text-sm">Total CSR Contributions</p>
+                        <h3 id="admin-csr-people" style="margin-top: 15px; color: var(--text-dark);">0</h3>
+                        <p class="text-sm">Total Beneficiaries</p>
+                        <div id="admin-csr-impact-msg" class="badge mt-2">Evaluating...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart Section -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h3>Company Performance & Resource Comparison</h3>
+                </div>
+                <div class="card-body" style="text-align: center;">
+                    <!-- Graph Controls -->
+                    <div class="chart-btn-group mb-3">
+                        <button type="button" class="chart-btn active" data-admin-mode="power" onclick="setAdminChartMode('power')">Power</button>
+                        <button type="button" class="chart-btn" data-admin-mode="water" onclick="setAdminChartMode('water')">Water</button>
+                        <button type="button" class="chart-btn" data-admin-mode="investment" onclick="setAdminChartMode('investment')">Investment</button>
+                        <button type="button" class="chart-btn" data-admin-mode="turnover" onclick="setAdminChartMode('turnover')">Turnover</button>
+                        <button type="button" class="chart-btn" data-admin-mode="csr" onclick="setAdminChartMode('csr')">CSR</button>
+                        <span class="divider" style="margin: 0 15px; color: var(--border-grey);">|</span>
+                        <button type="button" class="chart-btn" data-admin-mode="company_view" onclick="setAdminChartMode('company_view')" style="border-color: var(--brand-blue); color: var(--brand-blue); font-weight: bold;">Company View</button>
+                    </div>
+
+                    <!-- Company Selector Dropdown -->
+                    <div id="admin-company-selector-container" class="form-group mb-4" style="display: none; max-width: 300px; margin: 0 auto;">
+                        <select id="adminCompanySelect" class="form-control" onchange="updateAdminChart()">
+                            <!-- JS injected -->
+                        </select>
+                    </div>
+
+                    <div class="chart-wrapper" style="max-width: 800px; margin: 0 auto; text-align: left;">
+                        <canvas id="adminProgressChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Table Section -->
+            <div class="card mt-4 table-section">
+                <div class="card-header">
+                    <h3>All Companies Data</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="gov-table" id="adminCompanyTable">
+                            <thead>
+                                <tr>
+                                    <th>Company</th>
+                                    <th>Investment (Cr)</th>
+                                    <th>Employees</th>
+                                    <th>Water (L/day)</th>
+                                    <th>Power (kWh)</th>
+                                    <th>Turnover (Cr)</th>
+                                    <th>Efficiency</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminTableBody">
+                                <!-- JS injected -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Audit Log System -->
+            <div class="card mt-4 table-section">
+                <div class="card-header">
+                    <h3>System Audit Log</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="gov-table" id="adminAuditTable">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>User / Company</th>
+                                    <th>Action / Data Submitted</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminAuditTableBody">
+                                <!-- JS injected -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Drilldown Modal Dialog -->
+        <div id="drilldownModal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5);">
+            <div class="modal-content" style="background-color: #fff; margin: 5% auto; padding: 0; border-radius: 8px; width: 80%; max-width: 900px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                <div class="modal-header" style="background-color: var(--brand-blue); color: white; padding: 15px 20px; border-top-left-radius: 8px; border-top-right-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                    <h2 id="modalCompanyName" style="margin: 0; color: white;">Company Name</h2>
+                    <span class="close" onclick="closeDrilldownModal()" style="color: white; font-size: 28px; font-weight: bold; cursor: pointer;">&times;</span>
+                </div>
+                <div class="modal-body" style="padding: 20px;">
+                    <div class="two-column-layout mb-3">
+                        <div class="left-col card p-3 text-center">
+                            <h4>Sustainability Score</h4>
+                            <h1 id="modalSustainabilityScore" style="color: var(--brand-blue); font-size: 3.5em; margin: 10px 0;">0/100</h1>
+                        </div>
+                        <div class="right-col card p-3">
+                            <h4>Efficiency Breakdown</h4>
+                            <ul style="list-style: none; padding: 0; margin-top: 15px; font-size: 1.1em;">
+                                <li style="margin-bottom: 10px; display: flex; justify-content: space-between;"><strong>Water Efficiency:</strong> <span id="modalWaterEff" class="badge">0%</span></li>
+                                <li style="margin-bottom: 10px; display: flex; justify-content: space-between;"><strong>Power Efficiency:</strong> <span id="modalPowerEff" class="badge">0%</span></li>
+                                <li style="margin-bottom: 10px; display: flex; justify-content: space-between;"><strong>ROI:</strong> <span id="modalRoiEff" class="badge">0%</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <h4 class="mt-4 mb-2">Historical Activity</h4>
+                    <div class="table-responsive">
+                        <table class="gov-table" style="font-size: 0.9em;">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Invest (Cr)</th>
+                                    <th>Emp</th>
+                                    <th>Water (L/d)</th>
+                                    <th>Power (kWh)</th>
+                                    <th>Turnover (Cr)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modalHistoryBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Global Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-col brand-col">
+                    <img src="tn-logo.png" alt="TN Logo" class="footer-logo">
+                    <h3>SIPCOT Monitoring System</h3>
+                    <p>Fostering sustainable and highly structured industrial development across Tamil Nadu through centralized infrastructure management.</p>
+                </div>
+                
+                <div class="footer-col links-col">
+                    <h4>Important Links</h4>
+                    <ul>
+                        <li><a href="#">Disclaimer</a></li>
+                        <li><a href="#">Terms and Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Refund Policy</a></li>
+                        <li><a href="#">Hyperlink Policy</a></li>
+                        <li><a href="#">Copyright Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col contact-col">
+                    <h4>Contact Us</h4>
+                    <p><strong>Office:</strong> 19-A, Rukmini Lakshmipathy Road, Egmore, Chennai - 600008.</p>
+                    <p><strong>Phone:</strong> +91-44-28523836</p>
+                    <p><strong>Email:</strong> info@sipcot.in</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 SIPCOT Industrial Monitoring System. All Rights Reserved.</p>
+                <p class="developer-credit">Developed & Maintained by State IT Department</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
